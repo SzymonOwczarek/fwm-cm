@@ -1,8 +1,8 @@
 // src/app/(frontend)/[locale]/page.tsx
-import { notFound } from 'next/navigation' // 👈 Fixed Error 3
-import { getPayload } from 'payload' // 👈 Fixed Error 1
-import config from '@/payload.config' // 👈 Fixed Error 2
-import { blocksMap } from '@/components/blocks' // 👈 Fixed Errors 4 & 5
+import { notFound } from 'next/navigation'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
+import { blocksMap } from '@/components/blocks'
 
 interface HomepageProps {
   params: Promise<{
