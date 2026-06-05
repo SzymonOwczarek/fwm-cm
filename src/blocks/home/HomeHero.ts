@@ -1,7 +1,7 @@
 import { Block } from 'payload'
 
 export const HomeHeroBlock: Block = {
-  slug: 'homeHero',
+  slug: 'home-hero',
   labels: {
     singular: 'Developer Hero Section',
     plural: 'Developer Hero Sections',
