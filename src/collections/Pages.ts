@@ -10,6 +10,7 @@ import {
   OmniChannelAPIBlock,
   WebhookEcosystemBlock,
 } from '@/blocks/LandingBlocks'
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
@@ -42,7 +43,6 @@ export const Pages: CollectionConfig = {
         SecurityScannerBlock,
         OmniChannelAPIBlock,
         WebhookEcosystemBlock,
-        // As you create more Tailwind components (like Feature grids), register them here
       ],
     },
   ],
