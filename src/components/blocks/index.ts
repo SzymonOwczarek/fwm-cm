@@ -5,7 +5,7 @@ import { BenefitsSpeedMetrics } from './BenefitsSpeedMetrics'
 import { SecurityScanner } from './SecurityScanner'
 import { OmniChannelAPI } from './OmniChannelApi'
 import { WebhookEcosystem } from './WebhookEcosystem'
-import { HomeHero } from './HomeHero'
+import { HomeHero } from './home/HomeHero'
 
 export const blocksMap = {
   'home-hero': HomeHero,
