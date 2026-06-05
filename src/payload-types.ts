@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    pages: Page;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -86,10 +88,14 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
-  locale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'pl') | ('en' | 'pl')[];
+  globals: {
+    header: Header;
+  };
+  globalsSelect: {
+    header: HeaderSelect<false> | HeaderSelect<true>;
+  };
+  locale: 'en' | 'pl';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -161,6 +167,155 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug: string;
+  layout?:
+    | (
+        | {
+            /**
+             * Status message shown in the top badge
+             */
+            systemStatus?: string | null;
+            headingStart: string;
+            headingHighlight: string;
+            subheading: string;
+            primaryCtaText: string;
+            secondaryCtaText: string;
+            metrics?:
+              | {
+                  icon: 'layers' | 'cpu' | 'radio';
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Database value shown on line 4 of the code panel
+             */
+            codePanelDatabase?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeHero';
+          }
+        | {
+            systemLabel?: string | null;
+            heading?: string | null;
+            description?: string | null;
+            items?:
+              | {
+                  num?: string | null;
+                  category?: string | null;
+                  title?: string | null;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'architecture-blueprint';
+          }
+        | {
+            heading?: string | null;
+            metrics?:
+              | {
+                  value: string;
+                  label: string;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'metrics-bento';
+          }
+        | {
+            heading?: string | null;
+            benefits?:
+              | {
+                  label?: string | null;
+                  title: string;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'benefits-content-control';
+          }
+        | {
+            systemLabel?: string | null;
+            heading?: string | null;
+            description?: string | null;
+            metrics?:
+              | {
+                  metric?: string | null;
+                  stat?: string | null;
+                  benefit?: string | null;
+                  description?: string | null;
+                  codeLog?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'benefits-speed-metrics';
+          }
+        | {
+            heading?: string | null;
+            checks?:
+              | {
+                  label: string;
+                  status?: ('secure' | 'warning' | 'critical') | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'security-scanner';
+          }
+        | {
+            heading?: string | null;
+            /**
+             * The code to display in the scanner
+             */
+            codeSnippet?: string | null;
+            description?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'omni-channel-api';
+          }
+        | {
+            heading?: string | null;
+            integrations?:
+              | {
+                  name: string;
+                  logo?: (number | null) | Media;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'webhook-ecosystem';
+          }
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -190,6 +345,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -273,6 +432,152 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        homeHero?:
+          | T
+          | {
+              systemStatus?: T;
+              headingStart?: T;
+              headingHighlight?: T;
+              subheading?: T;
+              primaryCtaText?: T;
+              secondaryCtaText?: T;
+              metrics?:
+                | T
+                | {
+                    icon?: T;
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              codePanelDatabase?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'architecture-blueprint'?:
+          | T
+          | {
+              systemLabel?: T;
+              heading?: T;
+              description?: T;
+              items?:
+                | T
+                | {
+                    num?: T;
+                    category?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'metrics-bento'?:
+          | T
+          | {
+              heading?: T;
+              metrics?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'benefits-content-control'?:
+          | T
+          | {
+              heading?: T;
+              benefits?:
+                | T
+                | {
+                    label?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'benefits-speed-metrics'?:
+          | T
+          | {
+              systemLabel?: T;
+              heading?: T;
+              description?: T;
+              metrics?:
+                | T
+                | {
+                    metric?: T;
+                    stat?: T;
+                    benefit?: T;
+                    description?: T;
+                    codeLog?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'security-scanner'?:
+          | T
+          | {
+              heading?: T;
+              checks?:
+                | T
+                | {
+                    label?: T;
+                    status?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'omni-channel-api'?:
+          | T
+          | {
+              heading?: T;
+              codeSnippet?: T;
+              description?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'webhook-ecosystem'?:
+          | T
+          | {
+              heading?: T;
+              integrations?:
+                | T
+                | {
+                    name?: T;
+                    logo?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -310,6 +615,47 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  logoText: string;
+  navItems?:
+    | {
+        label: string;
+        /**
+         * Relative path (e.g., /services or /contact)
+         */
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  logoText?: T;
+  navItems?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLink?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
