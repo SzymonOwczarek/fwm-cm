@@ -199,7 +199,7 @@ export interface Page {
             codePanelDatabase?: string | null;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'homeHero';
+            blockType: 'home-hero';
           }
         | {
             systemLabel?: string | null;
@@ -219,12 +219,18 @@ export interface Page {
             blockType: 'architecture-blueprint';
           }
         | {
+            systemLabel?: string | null;
             heading?: string | null;
-            metrics?:
+            cards?:
               | {
-                  value: string;
-                  label: string;
+                  tag?: string | null;
+                  title?: string | null;
                   description?: string | null;
+                  footerLabel?: string | null;
+                  /**
+                   * For tags, use comma separated values
+                   */
+                  footerValue?: string | null;
                   id?: string | null;
                 }[]
               | null;
@@ -233,7 +239,9 @@ export interface Page {
             blockType: 'metrics-bento';
           }
         | {
+            systemLabel?: string | null;
             heading?: string | null;
+            description?: string | null;
             benefits?:
               | {
                   label?: string | null;
@@ -265,11 +273,26 @@ export interface Page {
             blockType: 'benefits-speed-metrics';
           }
         | {
+            systemLabel?: string | null;
             heading?: string | null;
-            checks?:
+            description?: string | null;
+            vectors?:
               | {
-                  label: string;
-                  status?: ('secure' | 'warning' | 'critical') | null;
+                  /**
+                   * e.g. sql, ddos, plugin
+                   */
+                  slug: string;
+                  label?: string | null;
+                  title?: string | null;
+                  vulnerability?: string | null;
+                  remediation?: string | null;
+                  status?: string | null;
+                  logs?:
+                    | {
+                        log: string;
+                        id?: string | null;
+                      }[]
+                    | null;
                   id?: string | null;
                 }[]
               | null;
@@ -278,17 +301,27 @@ export interface Page {
             blockType: 'security-scanner';
           }
         | {
+            systemLabel?: string | null;
             heading?: string | null;
+            description?: string | null;
             /**
-             * The code to display in the scanner
+             * The JSON payload to display in the terminal
              */
             codeSnippet?: string | null;
-            description?: string | null;
+            endpoints?:
+              | {
+                  title: string;
+                  description: string;
+                  status: string;
+                  id?: string | null;
+                }[]
+              | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'omni-channel-api';
           }
         | {
+            systemLabel?: string | null;
             heading?: string | null;
             integrations?:
               | {
@@ -440,7 +473,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        homeHero?:
+        'home-hero'?:
           | T
           | {
               systemStatus?: T;
@@ -482,13 +515,16 @@ export interface PagesSelect<T extends boolean = true> {
         'metrics-bento'?:
           | T
           | {
+              systemLabel?: T;
               heading?: T;
-              metrics?:
+              cards?:
                 | T
                 | {
-                    value?: T;
-                    label?: T;
+                    tag?: T;
+                    title?: T;
                     description?: T;
+                    footerLabel?: T;
+                    footerValue?: T;
                     id?: T;
                   };
               id?: T;
@@ -497,7 +533,9 @@ export interface PagesSelect<T extends boolean = true> {
         'benefits-content-control'?:
           | T
           | {
+              systemLabel?: T;
               heading?: T;
+              description?: T;
               benefits?:
                 | T
                 | {
@@ -531,12 +569,24 @@ export interface PagesSelect<T extends boolean = true> {
         'security-scanner'?:
           | T
           | {
+              systemLabel?: T;
               heading?: T;
-              checks?:
+              description?: T;
+              vectors?:
                 | T
                 | {
+                    slug?: T;
                     label?: T;
+                    title?: T;
+                    vulnerability?: T;
+                    remediation?: T;
                     status?: T;
+                    logs?:
+                      | T
+                      | {
+                          log?: T;
+                          id?: T;
+                        };
                     id?: T;
                   };
               id?: T;
@@ -545,15 +595,25 @@ export interface PagesSelect<T extends boolean = true> {
         'omni-channel-api'?:
           | T
           | {
+              systemLabel?: T;
               heading?: T;
-              codeSnippet?: T;
               description?: T;
+              codeSnippet?: T;
+              endpoints?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    status?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };
         'webhook-ecosystem'?:
           | T
           | {
+              systemLabel?: T;
               heading?: T;
               integrations?:
                 | T
